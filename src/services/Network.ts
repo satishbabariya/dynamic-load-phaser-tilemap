@@ -9,6 +9,9 @@ import { Message } from "../types/Messages";
 import { IRoomData, RoomType } from "../types/Rooms";
 import { ItemType } from "../types/Items";
 import { phaserEvents, Event } from "../events/EventCenter";
+import phaserGame from "../PhaserGame";
+import Bootstrap from "../scenes/Bootstrap";
+import Game from "../scenes/Game";
 
 export default class Network {
   private client: Client;
@@ -21,7 +24,19 @@ export default class Network {
     this.client = new Client("wss://vapi.jobrank.co");
 
     this.joinLobbyRoom().then(() => {
-      // store.dispatch(setGameServerConnected(true))
+      const bootstrap = phaserGame.scene.keys.bootstrap as Bootstrap;
+      bootstrap.network
+        .joinOrCreatePublic()
+        .then(() => bootstrap.launchGame())
+        .catch((error) => console.error(error));
+
+      // this.room = await this.client.joinOrCreate(RoomType.PUBLIC);
+      bootstrap.network.readyToConnect();
+
+      const game = phaserGame.scene.keys.game as Game;
+      game.registerKeys();
+      // game.myPlayer.setPlayerName(name)
+      // game.myPlayer.setPlayerTexture(avatarDetails.name)
     });
 
     phaserEvents.on(Event.MY_PLAYER_NAME_CHANGE, this.updatePlayerName, this);
@@ -111,6 +126,10 @@ export default class Network {
         );
       };
     };
+
+    this.room.onMessage(Message.ADD_CHAT_MESSAGE, ({ clientId, content }) => {
+      phaserEvents.emit(Event.UPDATE_DIALOG_BUBBLE, clientId, content);
+    });
   }
 
   // method to register event listener and call back function when a item user added
@@ -165,6 +184,7 @@ export default class Network {
     callback: (field: string, value: number | string, key: string) => void,
     context?: any
   ) {
+    console.log("onPlayerUpdated");
     phaserEvents.on(Event.PLAYER_UPDATED, callback, context);
   }
 

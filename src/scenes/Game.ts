@@ -48,7 +48,6 @@ export default class Game extends Phaser.Scene {
       ...this.input.keyboard.createCursorKeys(),
       ...(this.input.keyboard.addKeys("W,S,A,D") as ShooterKeys),
     };
-
     // maybe we can have a dedicated method for adding keys if more keys are needed in the future
     this.keyE = this.input.keyboard.addKey("E");
     this.keyR = this.input.keyboard.addKey("R");
@@ -300,6 +299,7 @@ export default class Game extends Phaser.Scene {
     id: string
   ) {
     const otherPlayer = this.otherPlayerMap.get(id);
+
     otherPlayer?.updateOtherPlayer(field, value);
   }
 
@@ -340,6 +340,7 @@ export default class Game extends Phaser.Scene {
 
   update(t: number, dt: number) {
     if (this.myPlayer && this.network) {
+      // console.log(this.cursors);
       this.playerSelector.update(this.myPlayer, this.cursors);
       this.myPlayer.update(
         this.playerSelector,

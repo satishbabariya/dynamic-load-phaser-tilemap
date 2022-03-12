@@ -21,7 +21,7 @@ const config: Phaser.Types.Core.GameConfig = {
     },
   },
   autoFocus: true,
-  scene: [Bootstrap, Game],
+  scene: [Bootstrap, Background, Game],
 };
 
 const phaserGame = new Phaser.Game(config);

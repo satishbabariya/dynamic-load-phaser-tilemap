@@ -86,7 +86,10 @@ export default class Bootstrap extends Phaser.Scene {
     this.network = new Network();
   }
 
-  create() {}
+  create() {
+    console.log("bootstrap");
+    this.launchBackground(BackgroundMode.DAY);
+  }
 
   private launchBackground(backgroundMode: BackgroundMode) {
     this.scene.launch("background", { backgroundMode });
