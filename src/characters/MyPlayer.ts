@@ -71,7 +71,7 @@ export default class MyPlayer extends Player {
         this.playContainerBody.velocity.setLength(speed);
 
         // update animation according to velocity and send new location and anim to server
-        if (vx !== 0 || vy !== 0)
+        if (vx !== 0 || vy !== 0) {
           if (vx > 0) {
             // network.updatePlayer(this.x, this.y, this.anims.currentAnim.key);
             this.play(`${this.playerTexture}_run_right`, true);
@@ -85,6 +85,8 @@ export default class MyPlayer extends Player {
             const parts = this.anims.currentAnim.key.split("_");
             parts[1] = "idle";
             const newAnim = parts.join("_");
+            console.log(newAnim);
+
             // this prevents idle animation keeps getting called
             if (this.anims.currentAnim.key !== newAnim) {
               this.play(parts.join("_"), true);
@@ -92,6 +94,24 @@ export default class MyPlayer extends Player {
               // network.updatePlayer(this.x, this.y, this.anims.currentAnim.key);
             }
           }
+        } else {
+          if (this.anims.currentAnim.key.includes("idle")) {
+            return;
+          }
+
+          // TODO: Optimize this part
+          // START ============================================================
+          const parts = this.anims.currentAnim.key.split("_");
+          parts[1] = "idle";
+          const newAnim = parts.join("_");
+          // this prevents idle animation keeps getting called
+          if (this.anims.currentAnim.key !== newAnim) {
+            this.play(parts.join("_"), true);
+            // send new location and anim to server
+            // network.updatePlayer(this.x, this.y, this.anims.currentAnim.key);
+          }
+          // END ==============================================================
+        }
         break;
 
       case PlayerBehavior.SITTING:
