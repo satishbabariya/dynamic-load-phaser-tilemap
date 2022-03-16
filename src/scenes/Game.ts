@@ -6,6 +6,9 @@ import "../characters/MyPlayer";
 import "../characters/OtherPlayer";
 import MyPlayer from "../characters/MyPlayer";
 import PlayerSelector from "../characters/PlayerSelector";
+import Chair from "../items/Chair";
+import Computer from "../items/Computer";
+import Whiteboard from "../items/Whiteboard";
 
 export type NavKeys = ShooterKeys & Phaser.Types.Input.Keyboard.CursorKeys;
 
@@ -21,6 +24,9 @@ export default class Game extends Phaser.Scene {
   private map!: Phaser.Tilemaps.Tilemap;
   myPlayer!: MyPlayer;
   private playerSelector!: Phaser.GameObjects.Zone;
+
+  private computerMap = new Map<string, Computer>();
+  private whiteboardMap = new Map<string, Whiteboard>();
 
   constructor() {
     super("game");
@@ -51,6 +57,51 @@ export default class Game extends Phaser.Scene {
       "this.network.mySessionId"
     );
     this.playerSelector = new PlayerSelector(this, 0, 0, 16, 16);
+
+    // import chair objects from Tiled map to Phaser
+    const chairs = this.physics.add.staticGroup({ classType: Chair });
+    const chairLayer = this.map.getObjectLayer("Chair");
+    chairLayer.objects.forEach((chairObj) => {
+      const item = this.addObjectFromTiled(
+        chairs,
+        chairObj,
+        "chairs",
+        "chair"
+      ) as Chair;
+      // custom properties[0] is the object direction specified in Tiled
+      item.itemDirection = chairObj.properties[0].value;
+    });
+
+    // import computers objects from Tiled map to Phaser
+    const computers = this.physics.add.staticGroup({ classType: Computer });
+    const computerLayer = this.map.getObjectLayer("Computer");
+    computerLayer.objects.forEach((obj, i) => {
+      const item = this.addObjectFromTiled(
+        computers,
+        obj,
+        "computers",
+        "computer"
+      ) as Computer;
+      item.setDepth(item.y + item.height * 0.27);
+      const id = `${i}`;
+      item.id = id;
+      this.computerMap.set(id, item);
+    });
+
+    // import whiteboards objects from Tiled map to Phaser
+    const whiteboards = this.physics.add.staticGroup({ classType: Whiteboard });
+    const whiteboardLayer = this.map.getObjectLayer("Whiteboard");
+    whiteboardLayer.objects.forEach((obj, i) => {
+      const item = this.addObjectFromTiled(
+        whiteboards,
+        obj,
+        "whiteboards",
+        "whiteboard"
+      ) as Whiteboard;
+      const id = `${i}`;
+      item.id = id;
+      this.whiteboardMap.set(id, item);
+    });
 
     // import other objects from Tiled map to Phaser
     this.addGroupFromTiled("Wall", "tiles_wall", "FloorAndGround", false);
@@ -118,6 +169,25 @@ export default class Game extends Phaser.Scene {
         [this.myPlayer, this.myPlayer.playerContainer],
         group
       );
+  }
+
+  private addObjectFromTiled(
+    group: Phaser.Physics.Arcade.StaticGroup,
+    object: Phaser.Types.Tilemaps.TiledObject,
+    key: string,
+    tilesetName: string
+  ) {
+    const actualX = object.x! + object.width! * 0.5;
+    const actualY = object.y! - object.height! * 0.5;
+    const obj = group
+      .get(
+        actualX,
+        actualY,
+        key,
+        object.gid! - this.map.getTileset(tilesetName).firstgid
+      )
+      .setDepth(actualY);
+    return obj;
   }
 
   update(t: number, dt: number) {

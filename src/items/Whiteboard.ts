@@ -1,6 +1,5 @@
 import { ItemType } from "../types/Items";
 import Item from "./Item";
-import Network from "../services/Network";
 
 export default class Whiteboard extends Item {
   id?: string;
@@ -49,8 +48,8 @@ export default class Whiteboard extends Item {
     this.updateStatus();
   }
 
-  openDialog(network: Network) {
-    if (!this.id) return;
-    network.connectToWhiteboard(this.id);
-  }
+  // openDialog(network: Network) {
+  //   if (!this.id) return;
+  //   network.connectToWhiteboard(this.id);
+  // }
 }
