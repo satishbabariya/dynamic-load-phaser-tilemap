@@ -43,6 +43,62 @@ export default class MyPlayer extends Player {
     );
   }
 
+  updatePlayer(playerSelector: PlayerSelector, cursors: NavKeys) {
+    if (!cursors) return;
+
+    const item = playerSelector.selectedItem;
+
+    switch (this.playerBehavior) {
+      case PlayerBehavior.IDLE:
+        const speed = 200;
+        let vx = 0;
+        let vy = 0;
+        if (cursors.left?.isDown || cursors.A?.isDown) vx -= speed;
+        if (cursors.right?.isDown || cursors.D?.isDown) vx += speed;
+        if (cursors.up?.isDown || cursors.W?.isDown) {
+          vy -= speed;
+          this.setDepth(this.y); //change player.depth if player.y changes
+        }
+        if (cursors.down?.isDown || cursors.S?.isDown) {
+          vy += speed;
+          this.setDepth(this.y); //change player.depth if player.y changes
+        }
+        // update character velocity
+        this.setVelocity(vx, vy);
+        this.body.velocity.setLength(speed);
+        // also update playerNameContainer velocity
+        this.playContainerBody.setVelocity(vx, vy);
+        this.playContainerBody.velocity.setLength(speed);
+
+        // update animation according to velocity and send new location and anim to server
+        if (vx !== 0 || vy !== 0)
+          if (vx > 0) {
+            // network.updatePlayer(this.x, this.y, this.anims.currentAnim.key);
+            this.play(`${this.playerTexture}_run_right`, true);
+          } else if (vx < 0) {
+            this.play(`${this.playerTexture}_run_left`, true);
+          } else if (vy > 0) {
+            this.play(`${this.playerTexture}_run_down`, true);
+          } else if (vy < 0) {
+            this.play(`${this.playerTexture}_run_up`, true);
+          } else {
+            const parts = this.anims.currentAnim.key.split("_");
+            parts[1] = "idle";
+            const newAnim = parts.join("_");
+            // this prevents idle animation keeps getting called
+            if (this.anims.currentAnim.key !== newAnim) {
+              this.play(parts.join("_"), true);
+              // send new location and anim to server
+              // network.updatePlayer(this.x, this.y, this.anims.currentAnim.key);
+            }
+          }
+        break;
+
+      case PlayerBehavior.SITTING:
+        break;
+    }
+  }
+
   update(
     playerSelector: PlayerSelector,
     cursors: NavKeys,

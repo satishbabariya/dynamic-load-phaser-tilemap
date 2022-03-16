@@ -1,9 +1,9 @@
 import Phaser from "phaser";
-import Network from "../services/Network";
+// import Network from "../services/Network";
 import { BackgroundMode } from "../types/BackgroundMode";
 
 export default class Bootstrap extends Phaser.Scene {
-  network!: Network;
+  // network!: Network;
 
   constructor() {
     super("bootstrap");
@@ -83,7 +83,7 @@ export default class Bootstrap extends Phaser.Scene {
   }
 
   init() {
-    this.network = new Network();
+    // this.network = new Network();
   }
 
   create() {
@@ -97,7 +97,7 @@ export default class Bootstrap extends Phaser.Scene {
 
   launchGame() {
     this.scene.launch("game", {
-      network: this.network,
+      // network: this.network,
     });
   }
 
