@@ -1,13 +1,9 @@
 import Phaser from "phaser";
 import PlayerSelector from "./PlayerSelector";
 import { PlayerBehavior } from "../types/PlayerBehavior";
-import { sittingShiftData } from "./Player";
 import Player from "./Player";
 import Chair from "../items/Chair";
 import { phaserEvents, Event } from "../events/EventCenter";
-import { ItemType } from "../types/Items";
-import Computer from "../items/Computer";
-import Whiteboard from "../items/Whiteboard";
 import { NavKeys } from "../scenes/Game";
 
 export default class MyPlayer extends Player {
