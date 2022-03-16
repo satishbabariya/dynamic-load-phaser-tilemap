@@ -1,6 +1,5 @@
 import { ItemType } from "../types/Items";
 import Item from "./Item";
-import Network from "../services/Network";
 
 export default class Computer extends Item {
   id?: string;
@@ -49,8 +48,8 @@ export default class Computer extends Item {
     this.updateStatus();
   }
 
-  openDialog(playerId: string, network: Network) {
-    if (!this.id) return;
-    network.connectToComputer(this.id);
-  }
+  // openDialog(playerId: string, network: Network) {
+  //   if (!this.id) return;
+  //   network.connectToComputer(this.id);
+  // }
 }
