@@ -12,6 +12,7 @@
     "vite": "^2.8.0"
   },
   "dependencies": {
-    "phaser": "^3.55.2"
+    "phaser": "^3.55.2",
+    "phaser-tiled-json-external-loader": "^0.1.1"
   }
 }

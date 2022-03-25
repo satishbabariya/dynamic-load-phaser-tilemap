@@ -180,6 +180,11 @@ path@^0.12.7:
     process "^0.11.1"
     util "^0.10.3"
 
+phaser-tiled-json-external-loader@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/phaser-tiled-json-external-loader/-/phaser-tiled-json-external-loader-0.1.1.tgz#2549b04cbfb47c75beffa38277e459a03154c411"
+  integrity sha512-KgVg/BhHYxmESUkwRQ1vNNqYkr5/HQ2meDZqSQP0dKpsqVwDp0JHf0X2d1fUSCYEQamozhKBxagYxWZLDVBrew==
+
 phaser@^3.55.2:
   version "3.55.2"
   resolved "https://registry.yarnpkg.com/phaser/-/phaser-3.55.2.tgz#c1e2e9e70de7085502885e06f46b7eb4bd95e29a"

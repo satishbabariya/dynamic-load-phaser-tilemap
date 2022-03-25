@@ -10,7 +10,7 @@ import phaserGame from "./PhaserGame";
 //   <a href="https://vitejs.dev/guide/features.html" target="_blank">Documentation</a>
 // `;
 
-setTimeout(() => {
-  const bootstrap = phaserGame.scene.keys.bootstrap as Bootstrap;
-  bootstrap.launchGame();
-}, 2000);
+// setTimeout(() => {
+//   const bootstrap = phaserGame.scene.keys.bootstrap as Bootstrap;
+//   bootstrap.launchGame();
+// }, 2000);
