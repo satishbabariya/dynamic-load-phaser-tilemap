@@ -3,13 +3,6 @@ import Phaser from "phaser";
 import { BackgroundMode } from "../types/BackgroundMode";
 
 export default class Game2 extends Phaser.Scene {
-  // network!: Network;
-
-  // layers: {
-  //   layerId: string;
-  //   tilesetImages: string[];
-  // }[] = [];
-
   tileset: string[] = [];
   layers: string[] = [];
 
