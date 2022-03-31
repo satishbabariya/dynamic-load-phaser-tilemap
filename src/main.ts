@@ -19,13 +19,16 @@ import Bootstrap from "./scenes/Bootstrap";
 // }, 2000);
 
 async function main() {
-  const json = await fetch("assets/archive/map.json");
+  const json = await fetch("map.json");
+  // const json = await fetch("Generic_Home_Designs/map.json");
   const jsonData = await json.json();
   // const phaserGame = await import("./PhaserGame");
   console.log(phaserGame.scene);
-  const bootstrap = phaserGame.scene.keys.bootstrap as Bootstrap;
-  bootstrap.launchGame(jsonData, "assets/archive/");
-  console.log(jsonData);
+  setTimeout(() => {
+    const bootstrap = phaserGame.scene.keys.bootstrap as Bootstrap;
+    bootstrap.launchGame(jsonData, "/");
+    console.log(jsonData);
+  }, 1000);
 }
 
 main();

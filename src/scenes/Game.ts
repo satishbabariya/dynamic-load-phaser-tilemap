@@ -24,7 +24,7 @@ export default class Game extends Phaser.Scene {
       map.createLayer(layer, tilesets);
     });
 
-    this.cameras.main.zoom = 0.8;
+    // this.cameras.main.zoom = 0.8;
   }
 
   preload() {
